@@ -1,12 +1,12 @@
-import yaml
-from kafka import KafkaProducer
-from monitoring.settings import cfg
+from monitoring.kafka import CheckResult, KafkaSender
 
-producer = KafkaProducer(**cfg["kafka"])
+message = CheckResult(
+    success=False,
+    response_code=200,
+    response_content="Hello world",
+    response_time=0.010,
+)
+print(message)
 
-print("Producer loaded")
-for i in range(4):
-    message = "message number {}".format(i)
-    producer.send("my_favorite_topic", message.encode("utf-8"))
-    print(f"Message {i} sent")
-producer.flush()
+sender = KafkaSender()
+sender.send(message)

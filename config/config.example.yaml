@@ -1,7 +1,8 @@
 kafka:
-  bootstrap_servers: "Insert host:port here"
-  security_protocol: SSL
-  ssl_cafile: config/ca.pem
-  ssl_certfile: config/service.cert
-  ssl_keyfile: config/service.key
-
+  connect:
+    bootstrap_servers: "Insert host:port here"
+    security_protocol: SSL
+    ssl_cafile: config/ca.pem
+    ssl_certfile: config/service.cert
+    ssl_keyfile: config/service.key
+  topic: "my_favorite_topic"
