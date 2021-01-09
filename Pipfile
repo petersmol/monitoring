@@ -8,6 +8,8 @@ pyyaml = "*"
 kafka-python = "*"
 requests = "*"
 datetime = "*"
+pytest = "*"
+pytest-mock = "*"
 
 [dev-packages]
 

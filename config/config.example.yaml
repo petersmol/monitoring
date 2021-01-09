@@ -6,3 +6,7 @@ kafka:
     ssl_certfile: config/service.cert
     ssl_keyfile: config/service.key
   topic: "my_favorite_topic"
+checks:
+  - url: http://petersmol.ru/
+    expected_code: 302
+  - url: https://aiven.io/

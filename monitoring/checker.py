@@ -9,6 +9,7 @@ import requests
 from time import time
 from datetime import datetime
 from monitoring.check_result import CheckResult
+from monitoring.settings import cfg
 
 # Enable logging
 # TODO: set all parameters in config-file
@@ -30,13 +31,10 @@ class Checker:
         logger.info("Checker finished")
 
     def get_check_list(self):
-        # TODO: get check list from config
-        return [
-            {"url": "http://petersmol.ru/", "expected_code": 302},
-            {
-                "url": "https://aiven.io/",
-            },
-        ]
+        """
+        Getting the list of checks from config
+        """
+        return cfg["checks"]
 
     def perform_check(self, check_params):
         # Making request
