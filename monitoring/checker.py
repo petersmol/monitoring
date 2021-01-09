@@ -5,6 +5,7 @@ monitoring.checker
 Checker class is responsible for performing website checks.
 """
 import logging
+import re
 import requests
 from time import time
 from datetime import datetime
@@ -51,13 +52,15 @@ class Checker:
         success = False
         expected_code = check_params.get("expected_code", 200)
         if check_params.get("regexp"):
-            # TODO: Implement regexp check
-            logger.debug(f"Checking regexp: {check_params['regexp']}")
-            success = False
+            pattern = re.compile(check_params["regexp"])
+            success = bool(pattern.search(r.content))
+            logger.debug(f"Checking regexp {pattern}. Success: {success}")
         else:
             if r.status_code == expected_code:
                 success = True
-        logger.debug(f"Success: {success}")
+            logger.debug(
+                f"Code {r.status_code}, expected: {expected_code}. Success: {success}"
+            )
 
         # Reporting
         return CheckResult(
