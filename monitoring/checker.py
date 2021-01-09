@@ -30,7 +30,7 @@ class Checker:
         logger.info("Checker finished")
 
     def get_check_list(self):
-        # TODO: get check list from DB
+        # TODO: get check list from config
         return [
             {"url": "http://petersmol.ru/", "expected_code": 302},
             {
@@ -53,6 +53,7 @@ class Checker:
         success = False
         expected_code = check_params.get("expected_code", 200)
         if check_params.get("regexp"):
+            # TODO: Implement regexp check
             logger.debug(f"Checking regexp: {check_params['regexp']}")
             success = False
         else:
