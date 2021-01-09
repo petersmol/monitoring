@@ -6,10 +6,16 @@ import json
 class CheckResult:
     """ Dataclass containing check results """
 
+    # Check results
     success: bool
     response_code: str
-    response_content: str
+    response_length: int
     response_time: float
+    datetime: str
+
+    # Request parameters
+    url: str
+    expected_code: int = 200
     regexp: str = None
 
     def dumps(self):
