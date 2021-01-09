@@ -1,14 +1,6 @@
-from kafka import KafkaConsumer
-from monitoring.settings import cfg
+from monitoring.kafka import CheckResult, KafkaReceiver
 
-consumer = KafkaConsumer(
-    cfg["kafka"]["topic"],
-    **cfg["kafka"]["connect"],
-    auto_offset_reset="earliest",
-    client_id="demo-client-1",
-    group_id="demo-group",
-)
 
-print("Consumer is ready")
-for msg in consumer:
-    print(msg)
+receiver = KafkaReceiver()
+for check in receiver.receive():
+    print(check)
