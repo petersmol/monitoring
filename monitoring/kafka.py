@@ -6,20 +6,9 @@ Module responsible for all interactions with Kafka.
 
 """
 from dataclasses import dataclass, asdict
-import json
-from kafka import KafkaConsumer, KafkaProducer
+import kafka
+from monitoring.check_result import CheckResult
 from monitoring.settings import cfg
-
-
-@dataclass
-class CheckResult:
-    """ Dataclass containing check results """
-
-    success: bool
-    response_code: str
-    response_content: str
-    response_time: float
-    regexp: str = None
 
 
 class KafkaSender:
@@ -33,9 +22,9 @@ class KafkaSender:
 
     def __init__(self):
         def _serializer(value):
-            return json.dumps(asdict(value)).encode("utf-8")
+            return value.dumps()
 
-        self.producer = KafkaProducer(
+        self.producer = kafka.KafkaProducer(
             **cfg["kafka"]["connect"], value_serializer=_serializer
         )
 
@@ -55,10 +44,9 @@ class KafkaReceiver:
 
     def __init__(self):
         def _deserializer(value):
-            data = json.loads(value.decode("utf-8"))
-            return CheckResult(**data)
+            return CheckResult.loads(value)
 
-        self.consumer = KafkaConsumer(
+        self.consumer = kafka.KafkaConsumer(
             cfg["kafka"]["topic"],
             **cfg["kafka"]["connect"],
             auto_offset_reset="earliest",
