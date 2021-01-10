@@ -10,6 +10,8 @@ requests = "*"
 datetime = "*"
 pytest = "*"
 pytest-mock = "*"
+psycopg2-binary = "*"
+pydantic = "*"
 
 [dev-packages]
 

@@ -10,8 +10,16 @@ My system monitors website availability over the network, produces metrics about
 
 ## Installing
 
-* Copy `config/config.example.yaml` to `config/config.yaml` and fill the nessesary connection parameters
-* Download Kafka's `ca.pem`, `service.cert` and `service.key` to `config/` folder
+* Copy `config/config.example.yaml` to `config/config.yaml`.
+* Download Kafka's `ca.pem`, `service.cert` and `service.key` to `config/` folder, fill `kafka.connect.bootstrap_servers` in config.yaml with the actual host:port.
+* Fill the `checks` list in config.yaml according to your reqirements.
+## Checks configuration
+
+You can add arbitrary number of checks into the config. Following parameters are accepted
+
+**url (required)** — page to request, e.g. `https://example.com/index.html`. At the moment, only GET requests are supported.
+**expected_code** (default: 200) — which HTTP response code we're expecting (all other will be treated as failure).
+**regexp** (default: None) - Check page for matching regular expression. Response code will be ignored.
 
 ## Components
 

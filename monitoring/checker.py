@@ -70,6 +70,6 @@ class Checker:
             response_time=response_time,
             url=check_params["url"],
             expected_code=expected_code,
-            regexp=check_params.get("regexp", None),
-            datetime=str(datetime.now()),
+            regexp=check_params.get("regexp", ""),
+            created=str(datetime.now()),
         )

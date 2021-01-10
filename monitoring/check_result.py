@@ -1,9 +1,8 @@
-from dataclasses import dataclass, asdict
 import json
+from pydantic import BaseModel
 
 
-@dataclass
-class CheckResult:
+class CheckResult(BaseModel):
     """ Dataclass containing check results """
 
     # Check results
@@ -11,16 +10,16 @@ class CheckResult:
     response_code: str
     response_length: int
     response_time: float
-    datetime: str
+    created: str
 
     # Request parameters
     url: str
     expected_code: int = 200
-    regexp: str = None
+    regexp: str = ""
 
     def dumps(self):
         """ Convert self to bytes """
-        return json.dumps(asdict(self)).encode("utf-8")
+        return json.dumps(self.dict()).encode("utf-8")
 
     @classmethod
     def loads(cls, string):
