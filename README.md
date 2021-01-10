@@ -18,6 +18,7 @@ My system monitors website availability over the network and passes these events
 You can add an arbitrary number of checks into the config. Following parameters are accepted
 
 | Parameter | Required | Description |
+| --- | --- | --- |
 | **url** | Yes |  page to request, e.g. `https://example.com/index.html`. At the moment, only GET requests are supported. |
 | **expected_code** | No, default: 200 | Which HTTP response code we're expecting (all other will be treated as failure). |
 | **regexp** | No, default: "" | Check page for matching regular expression. Response code will be ignored. |
