@@ -6,6 +6,7 @@ Raw PostgreSQL implementation of the DB Model.
 
 """
 import psycopg2
+from psycopg2.extras import DictCursor
 from monitoring.settings import cfg
 from monitoring.check_result import CheckResult
 
@@ -13,7 +14,7 @@ from monitoring.check_result import CheckResult
 class DB:
     def __init__(self):
         self.conn = psycopg2.connect(cfg["postgresql"]["uri"])
-        self.cur = self.conn.cursor()
+        self.cur = self.conn.cursor(cursor_factory=DictCursor)
         self.setup_db()
 
     def setup_db(self):
@@ -46,7 +47,11 @@ class DB:
         )
         self.conn.commit()
 
-    def enumerate_check_results(self):
+    def enumerate_checks(self):
+        self.cur.execute("SELECT * FROM checks")
+        return self.cur.fetchall()
+
+    def enumerate_results(self):
         self.cur.execute("SELECT * FROM results")
         return self.cur.fetchall()
 

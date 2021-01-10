@@ -3,13 +3,18 @@ from monitoring.db import DB
 
 model = DB()
 
-all_checks = model.enumerate_check_results()
+print("=== Checks ===")
+checks = model.enumerate_checks()
+for c in checks:
+    print(dict(c))
+print("=== Results ===")
+results = model.enumerate_results()
+for r in results:
+    print(r)
 
-for c in all_checks:
-    print(c)
+print(f"{len(checks)} checks, {len(results)} results found")
 
-print(f"{len(all_checks)} results found")
-
+print("=== Waiting for new results ===")
 receiver = KafkaReceiver()
 for result in receiver.receive():
     print(result)
