@@ -44,7 +44,7 @@ def test_checker_perform_check_200_ok(mocker):
     assert check_list.success == True
     assert check_list.url == check_param["url"]
     assert check_list.expected_code == 200
-    assert check_list.regexp == None
+    assert check_list.regexp == ""
 
 
 def test_checker_perform_check_502_fail(mocker):
