@@ -4,17 +4,48 @@ My system monitors website availability over the network and passes these events
 
 ## Prerequisites
 
-* Python 3.8
+* Python 3.9
+* Docker
 * Kafka 12.4
 * PostgreSQL 12
 
+
+## Running
+
+* Download source code to your local machine
+* Update the configuration file (see Configuring section below)
+* Build the docker image:
+```
+docker build -t monitoring .
+```
+* Run consumer container:
+```
+docker run monitoring python -u run_consumer.py
+```
+* Run checker container:
+```
+docker run monitoring python -u run_checker.py
+```
+
+### Deploying to AWS Elastic Container Service
+* Push builded docker image to AWS ECR following their instructions
+* Create new ECS task with 2 containers `consumer` and `checker`. Use the same image for both and add custom entrypoints: `python, -u, run_consumer.py` and `python, -u, run_checker.py` accordingly.
+
 ## Configuring
 
-* Copy [config/config.example.yaml](config/config.example.yaml) to `config/config.yaml`.
-* Download Kafka's `ca.pem`, `service.cert` and `service.key` to `config/` folder, fill `kafka.connect.bootstrap_servers` in config.yaml with the actual host:port.
-* Fill `postgresql.uri` in config.yaml with your database URI.
+Copy [config/config.example.yaml](config/config.example.yaml) to `config/config.yaml`, then follow the instructions below.
+
+### Kafka
+* Order Aiven Kafka instance, and create topic.
+* Download Kafka's `ca.pem`, `service.cert` and `service.key` to `config/` folder
+* Fill `kafka.connect.bootstrap_servers` in config.yaml with the actual host:port
+* Fill `kafka.topic` in config.yaml with topic naame.
 * Add your checks to the config.yaml.
-## Checks configuration
+
+### PostgreSQL
+* Order Aiven PostgreSQL instance. You can use the default database or create new one if needed.
+* Fill `postgresql.uri` in config.yaml with your database URI.
+### Checks configuration
 
 You can add an arbitrary number of checks into the config. Following parameters are accepted
 
@@ -23,6 +54,8 @@ You can add an arbitrary number of checks into the config. Following parameters 
 | **url** | Yes |  page to request, e.g. `https://example.com/index.html`. At the moment, only GET requests are supported. |
 | **expected_code** | No, default: 200 | Which HTTP response code we're expecting (all other will be treated as failure). |
 | **regexp** | No, default: "" | Check page for matching regular expression. Response code will be ignored. |
+
+
 
 ## Components
 
