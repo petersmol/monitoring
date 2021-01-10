@@ -8,10 +8,11 @@ My system monitors website availability over the network and passes these events
 * Kafka 12.4
 * PostgreSQL 12
 
-## Installing
+## Configuring
 
 * Copy [config/config.example.yaml](config/config.example.yaml) to `config/config.yaml`.
 * Download Kafka's `ca.pem`, `service.cert` and `service.key` to `config/` folder, fill `kafka.connect.bootstrap_servers` in config.yaml with the actual host:port.
+* Fill `postgresql.uri` in config.yaml with your database URI.
 * Add your checks to the config.yaml.
 ## Checks configuration
 

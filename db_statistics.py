@@ -13,9 +13,3 @@ for r in results:
     print(r)
 
 print(f"{len(checks)} checks, {len(results)} results found")
-
-print("=== Waiting for new results ===")
-receiver = KafkaReceiver()
-for result in receiver.receive():
-    print(result)
-    model.add_check_result(result)
