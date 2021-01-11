@@ -13,11 +13,9 @@ from monitoring.check_result import CheckResult
 from monitoring.settings import cfg
 
 # Enable logging
-# TODO: set all parameters in config-file
 logging.basicConfig()
-logger = logging.getLogger("checker")
+logger = logging.getLogger(__name__)
 logger.setLevel("DEBUG")
-
 
 class Checker:
     def __init__(self, sender):

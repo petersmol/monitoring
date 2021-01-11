@@ -1,13 +1,18 @@
+import logging
 from monitoring.kafka import CheckResult, KafkaReceiver
 from monitoring.db import DB
 
-print("Consumer started")
-model = DB()
-print("DB connected")
-receiver = KafkaReceiver()
-print("Kafka connected")
+logging.basicConfig()
+logger = logging.getLogger("consumer")
+logger.setLevel("DEBUG")
 
-print("=== Waiting for new results ===")
+logger.debug("Consumer started")
+model = DB()
+logger.debug("DB connected")
+receiver = KafkaReceiver()
+logger.debug("Kafka connected")
+
+logger.info("Waiting for the results")
 for result in receiver.receive():
-    print(result)
+    logger.info(result)
     model.add_check_result(result)

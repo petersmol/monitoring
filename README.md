@@ -40,7 +40,6 @@ Copy [config/config.example.yaml](config/config.example.yaml) to `config/config.
 * Download Kafka's `ca.pem`, `service.cert` and `service.key` to `config/` folder
 * Fill `kafka.connect.bootstrap_servers` in config.yaml with the actual host:port
 * Fill `kafka.topic` in config.yaml with topic naame.
-* Add your checks to the config.yaml.
 
 ### PostgreSQL
 * Order Aiven PostgreSQL instance. You can use the default database or create new one if needed.
@@ -61,9 +60,7 @@ You can add an arbitrary number of checks into the config. Following parameters 
 
 ### Website checker
 
-Kafka producer which periodically checks the target websites and sends the check results to a Kafka topic.
-The website checker performs the checks periodically and collects the HTTP response time, error code returned, as well as optionally checking the returned page contents for a regexp pattern that is expected to be found on the
-page.
+Checker runs all checks from the config file every 60 seconds, then sends results to the writer using Kafka producer.
 
 ### DB writer
 
@@ -73,7 +70,13 @@ Kafka consumer stores the data to the PostgreSQL database. Information is stored
 
 `results` - all results for a given check. Besides boolean `success` value, provides some additional data for analytics: response time in seconds, response length, returned HTTP code.
 
+## Known issues
 
+* Checker works consequently. Hence, one slow check can offect all others.
+* Next check timer starts only when all checks are finished.
+* Logging to stdout is a bit messy.
+* Installing instructions could be easier.
+* Test coverage could be better.
 ## Contact
 
 If you want to contact me you can reach me at <pub@petersmol.ru>

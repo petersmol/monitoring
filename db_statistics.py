@@ -1,15 +1,20 @@
 from monitoring.kafka import CheckResult, KafkaReceiver
 from monitoring.db import DB
+import logging
+
+ogging.basicConfig()
+logger = logging.getLogger("statistics")
+logger.setLevel("DEBUG")
 
 model = DB()
 
-print("=== Checks ===")
+logger.info("=== Checks ===")
 checks = model.enumerate_checks()
 for c in checks:
-    print(dict(c))
-print("=== Results ===")
+    logger.info(dict(c))
+logger.info("=== Results ===")
 results = model.enumerate_results()
 for r in results:
-    print(r)
+    logger.info(r)
 
-print(f"{len(checks)} checks, {len(results)} results found")
+logger.info(f"{len(checks)} checks, {len(results)} results found")
