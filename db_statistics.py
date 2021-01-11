@@ -2,7 +2,7 @@ from monitoring.kafka import CheckResult, KafkaReceiver
 from monitoring.db import DB
 import logging
 
-ogging.basicConfig()
+logging.basicConfig()
 logger = logging.getLogger("statistics")
 logger.setLevel("DEBUG")
 

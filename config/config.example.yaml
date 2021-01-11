@@ -6,9 +6,11 @@ kafka:
     ssl_certfile: config/service.cert
     ssl_keyfile: config/service.key
   topic: "my_favorite_topic"
-postgresql:
-  uri: "postgres://login:password@host:port/database"
+postgresql_uri: "postgres://login:password@host:port/database"
+redis_uri: "rediss://login:password@host:port"
 checks:
   - url: http://petersmol.ru/
     expected_code: 302
+    check_period: 5
   - url: https://aiven.io/
+    check_period: 300

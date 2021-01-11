@@ -6,4 +6,4 @@ checker = Checker(sender=KafkaSender)
 
 while True:
     checker.run()
-    time.sleep(60)
+    time.sleep(1)

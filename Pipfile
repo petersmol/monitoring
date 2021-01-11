@@ -13,6 +13,7 @@ pytest-mock = "*"
 psycopg2-binary = "*"
 pydantic = "*"
 pytest-cov = "*"
+redis = "*"
 
 [dev-packages]
 

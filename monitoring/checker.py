@@ -6,10 +6,12 @@ Checker class is responsible for performing website checks.
 """
 import logging
 import re
+from redis import Redis
+import pydantic
 import requests
 from time import time
 from datetime import datetime
-from monitoring.check_result import CheckResult
+from monitoring.check_models import CheckParams, CheckResult
 from monitoring.settings import cfg
 
 # Enable logging
@@ -17,29 +19,34 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel("DEBUG")
 
+
 class Checker:
     def __init__(self, sender):
         self.sender = sender()
+        self.redis = Redis.from_url(cfg["redis_uri"])
 
     def run(self):
         """ Performs all scheduled checks """
-        logger.info("Checker started")
         for check_params in self.get_check_list():
+            # Skipping if it is too early for the next check
+            if self.redis.get(check_params.key):
+                continue
             check = self.perform_check(check_params)
+
+            self.redis.set(check_params.key, 1, ex=check_params.check_period)
             self.sender.send(check)
-        logger.info("Checker finished")
 
     def get_check_list(self):
         """
         Getting the list of checks from config
         """
-        return cfg["checks"]
+        return [CheckParams.parse_obj(x) for x in cfg["checks"]]
 
-    def perform_check(self, check_params):
+    def perform_check(self, check_params: CheckParams):
         # Making request
         logger.debug(f"Perform check {check_params}")
         start = time()
-        r = requests.get(check_params["url"], allow_redirects=False)
+        r = requests.get(check_params.url, allow_redirects=False)
         response_time = round(time() - start, 3)
         response_length = len(r.content)
         logger.debug(
@@ -48,16 +55,15 @@ class Checker:
 
         # Checking if it is successful
         success = False
-        expected_code = check_params.get("expected_code", 200)
-        if check_params.get("regexp"):
-            pattern = re.compile(check_params["regexp"])
+        if check_params.regexp:
+            pattern = re.compile(check_params.regexp)
             success = bool(pattern.search(r.content))
             logger.debug(f"Checking regexp {pattern}. Success: {success}")
         else:
-            if r.status_code == expected_code:
+            if r.status_code == check_params.expected_code:
                 success = True
             logger.debug(
-                f"Code {r.status_code}, expected: {expected_code}. Success: {success}"
+                f"Code {r.status_code}, expected: {check_params.expected_code}. Success: {success}"
             )
 
         # Reporting
@@ -66,8 +72,8 @@ class Checker:
             response_code=r.status_code,
             response_length=response_length,
             response_time=response_time,
-            url=check_params["url"],
-            expected_code=expected_code,
-            regexp=check_params.get("regexp", ""),
+            url=check_params.url,
+            expected_code=check_params.expected_code,
+            regexp=check_params.regexp,
             created=str(datetime.now()),
         )

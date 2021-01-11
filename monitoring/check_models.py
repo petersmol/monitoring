@@ -2,8 +2,21 @@ import json
 from pydantic import BaseModel
 
 
+class CheckParams(BaseModel):
+    """ Class containing check paarams """
+
+    url: str
+    expected_code: int = 200
+    regexp: str = ""
+    check_period: int = 60
+
+    @property
+    def key(self):
+        return self.url
+
+
 class CheckResult(BaseModel):
-    """ Dataclass containing check results """
+    """ Class containing check results """
 
     # Check results
     success: bool

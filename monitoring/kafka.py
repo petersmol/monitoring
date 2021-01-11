@@ -7,7 +7,7 @@ Module responsible for all interactions with Kafka.
 """
 from dataclasses import dataclass, asdict
 import kafka
-from monitoring.check_result import CheckResult
+from monitoring.check_models import CheckResult
 from monitoring.settings import cfg
 
 

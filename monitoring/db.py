@@ -8,12 +8,12 @@ Raw PostgreSQL implementation of the DB Model.
 import psycopg2
 from psycopg2.extras import DictCursor
 from monitoring.settings import cfg
-from monitoring.check_result import CheckResult
+from monitoring.check_models import CheckResult
 
 
 class DB:
     def __init__(self):
-        self.conn = psycopg2.connect(cfg["postgresql"]["uri"])
+        self.conn = psycopg2.connect(cfg["postgresql_uri"])
         self.cur = self.conn.cursor(cursor_factory=DictCursor)
         self.setup_db()
 
