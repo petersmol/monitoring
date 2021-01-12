@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class CheckParams(BaseModel):
-    """ Class containing check paarams """
+    """ Class containing check params """
 
     url: str
     expected_code: int = 200
@@ -12,6 +12,7 @@ class CheckParams(BaseModel):
 
     @property
     def key(self):
+        """ unique check identifier for redis """
         return self.url
 
 
@@ -32,10 +33,9 @@ class CheckResult(BaseModel):
 
     def dumps(self):
         """ Convert self to bytes """
-        return json.dumps(self.dict()).encode("utf-8")
+        return self.json().encode("utf-8")
 
     @classmethod
     def loads(cls, string):
         """ Restore object from bytes """
-        data = json.loads(string.decode("utf-8"))
-        return cls(**data)
+        return cls.parse_raw(string)
