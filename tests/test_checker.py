@@ -7,21 +7,30 @@ import redis
 
 
 def test_checker_run(mocker):
-    # Creating Checker object
+    # Creating Checker object (with mocked Kafka and Redis)
     sender = mocker.Mock()
+    mocker.patch("redis.Redis")
+
     checker = monitoring.checker.Checker(sender=sender)
     sender.assert_called_once_with()
 
-    # Mocking every calls and execute checker.run()
+    # Mocking every call and execute checker.run()
+    checker.redis = mocker.Mock()
+    attrs = {
+        "get.return_value": None,
+        "set.return_value": None,
+    }
+    checker.redis.configure_mock(**attrs)
     check_param = CheckParams(url="dummy")
     mocker.patch(
         "monitoring.checker.Checker.get_check_list", return_value=[check_param]
     )
     mocker.patch("monitoring.checker.Checker.perform_check", return_value="dummy2")
-    mocker.patch("redis.Redis.from_url")
     checker.run()
 
     # Checking that mocks are still actual
+    checker.redis.get.assert_called_once_with(check_param.url)
+    checker.redis.set.assert_called_once_with("dummy", 1, ex=60)
     monitoring.checker.Checker.get_check_list.assert_called_once_with()
     monitoring.checker.Checker.perform_check.assert_called_once_with(check_param)
     checker.sender.send.assert_called_once_with("dummy2")
