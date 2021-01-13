@@ -1,3 +1,10 @@
+"""
+check_models.py
+~~~~~~~~~~~~~~~
+
+Pydantic models to verify check parameters and check results during serialization/deserialization
+"""
+
 import json
 from pydantic import BaseModel
 

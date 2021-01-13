@@ -1,3 +1,11 @@
+"""
+run_consumer.py
+~~~~~~~~~~~~~~
+
+DB writer entry point, waits for any new messages from Kafka in the blocking mode.
+
+"""
+
 import logging
 from monitoring.kafka import CheckResult, KafkaReceiver
 from monitoring.db import DB

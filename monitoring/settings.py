@@ -2,9 +2,8 @@
 monitoring.settings
 ~~~~~~~~~~~~~~~~~~~
 
-Sets common variables and loads application config from YAML-file.
+Sets common variables and loads application config from the YAML file.
 
-TODO: add other configuration sources (e.g. env) for production environment
 """
 
 from pathlib import Path

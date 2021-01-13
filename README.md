@@ -31,7 +31,7 @@ You can also use prebuilt docker image and mount your `config/` folder into `/ap
 
 ## Running without docker
 
-Download source code to your local machine
+Download source code to your local machine and run the following commands:
 ```
 pip install pipenv
 pipenv install

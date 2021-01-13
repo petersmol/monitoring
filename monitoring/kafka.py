@@ -1,6 +1,6 @@
 """
 monitoring.kafka
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 Module responsible for all interactions with Kafka.
 

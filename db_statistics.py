@@ -1,3 +1,10 @@
+"""
+db_statistics.py
+~~~~~~~~~~~~~~~~
+
+Making some database queries for the debugging purposes.
+
+"""
 from monitoring.kafka import CheckResult, KafkaReceiver
 from monitoring.db import DB
 import logging

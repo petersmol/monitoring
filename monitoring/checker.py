@@ -43,6 +43,9 @@ class Checker:
         return [CheckParams.parse_obj(x) for x in cfg["checks"]]
 
     def perform_check(self, check_params: CheckParams):
+        """
+        Actually doing the http request
+        """
         # Making request
         logger.debug(f"Perform check {check_params}")
         start = time()
