@@ -92,8 +92,6 @@ Kafka consumer stores the data to the PostgreSQL database. Information is stored
 
 `results` - all results for a given check. Besides boolean `success` value, provides some additional data for analytics: response time in seconds, response length, returned HTTP code.
 
-## Known issues
-* Test coverage could be better.
 ## Contact
 
 If you want to contact me you can reach me at <pub@petersmol.ru>
