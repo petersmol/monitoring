@@ -10,10 +10,10 @@ My system monitors website availability over the network and passes these events
 * Redis - for tracking last check time
 * Docker - not nessesary, but it's convenient for production deployment
 
-## Running
+## Running in Docker
 
-* Download source code to your local machine
-* Update the configuration file (see Configuring section below)
+* Download source code to your local machine (`git clone git@github.com:petersmol/monitoring.git`)
+* Update the configuration file (see "Configuring" section below)
 * Build the docker image:
 ```
 docker build -t monitoring .
@@ -28,6 +28,22 @@ docker run monitoring python -u run_checker.py
 ```
 
 You can also use prebuilt docker image and mount your `config/` folder into `/app/config`.
+
+## Running without docker
+
+Download source code to your local machine
+```
+pip install pipenv
+pipenv install
+pipenv shell
+```
+
+Then in pipenv shell you can run scripts in root project folder:
+* `python run_consumer.py` - start DB writer service
+* `python run_checker.py` - start website checker service
+* `python run_checker_once.py` - perform all checks once and exit
+* `python db_statistics.py` - quick look into the existing DB entries
+
 
 ### Deploying to AWS Elastic Container Service
 * Push builded docker image to AWS ECR following their instructions
